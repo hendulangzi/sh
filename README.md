@@ -1,7 +1,7 @@
 # sh
 auto start php project
 
-#下面auto_build.sh文件
+#下面是auto_build.sh文件内容
     #!/bin/bash
     ## build src
     echo $1 #project params url
