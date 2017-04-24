@@ -2,23 +2,45 @@
 auto start php project
 
 #下面是auto_build.sh文件内容
-    #!/bin/bash
-    ## build src
-    echo $1 #project params url
 
-    #build direct
-    if [ ! -d "/home/project/test" ]; then
-    mkdir /home/project/test
-    fi
-    cd /home/project/test/
+     #!/bin/bash
+     ## build src
+     echo $1 #project git url
+     webroot="/home/project/"
+     giturl=$1
+     port=$2
 
-    #download project
-    #git clone "$1"
+     #1、build direct
+     dir=$webroot"test"
+     if [ ! -d $dir ]; then
+     mkdir $dir
+     else  
+     d="`date +%Y%m%d%H%M%S`"
+     cp -r $dir $dir"_"$d
+     rm -rf $dir
+     mkdir $dir
+     fi
+     cd $dir
 
-    #get project name
-    giturl=$1
-    last=${giturl#*/}
-    project_name=${last%.*}
-    echo $project_name
+     #2、download project
+     #git clone "$1"
 
-    #set nginx config for the project
+     #3、get project name
+     last=${giturl#*/}
+     project_name=${last%.*}
+     echo $project_name
+
+     #4、set nginx config for the project
+     ngx_conf=$project_name".conf"
+     echo $ngx_conf
+     new_conf=$webroot$ngx_conf
+     #5、如果没有创建过配置文件
+     if [ ! -d $new_conf ]; then
+     #创建配置文件
+     cp $webroot"/create.conf" $new_conf
+     #替换文件内容
+     project_url=$webroot$project_name
+     sed -i "s/@port@/$port/g" $new_conf 
+     sed -i "s/@project_name@/"${project_name}"/g" $new_conf 
+     sed -i "s/@server_name@/www.$project_name.com/g" $new_conf 
+     fi
