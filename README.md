@@ -26,7 +26,7 @@ auto start php project
      #git clone "$1"
 
      #3、get project name
-     last=${giturl#*/}
+     last=${giturl##*/}
      project_name=${last%.*}
      echo $project_name
 
