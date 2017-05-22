@@ -44,3 +44,17 @@ auto start php project
      sed -i "s/@project_name@/"${project_name}"/g" $new_conf 
      sed -i "s/@server_name@/www.$project_name.com/g" $new_conf 
      fi
+     
+ #linux crontab每秒执行的最简单实现方法
+     
+     近要做一个发短信订阅的计划，每3秒执行一次
+
+     * * * * * for i in {0..59}; do curl http://localhost/data/sms_data.php && sleep 3; done;
+
+     每秒执行如下：
+     
+     * * * * * for i in {0..59}; do curl http://localhost/data/sms_data.php && sleep 1; done;
+
+     每15秒执行一次：
+
+     * * * * * for i in 0 1 2; do curl http://localhost/data/sms_data.php & sleep 15; done;
